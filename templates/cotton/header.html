@@ -1,0 +1,73 @@
+<c-vars transparent="false" />
+
+{% load allauth %}
+
+<header
+    {% if transparent == "true" %}
+        class="fixed top-0 left-0 right-0 z-50"
+        style="background: transparent;"
+    {% else %}
+        class="sticky top-0 z-50"
+        style="background-color: var(--navy-950); border-bottom: 1px solid var(--slate-800);"
+    {% endif %}
+>
+    <nav class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 h-16 flex items-center justify-between">
+        <!-- Brand -->
+        <a href="{% url 'home' %}" class="font-display text-lg font-bold tracking-tight" style="color: #e8ecf4;">
+            Django Starter
+        </a>
+
+        <!-- Desktop nav -->
+        <div class="hidden sm:flex items-center gap-4">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'account_login' %}"
+                   class="inline-flex items-center px-5 py-2 text-xs font-semibold rounded-lg tracking-wide"
+                   style="background-color: var(--amber-500); color: var(--navy-950);">
+                    Sign In
+                </a>
+            {% else %}
+                <a href="{% url 'dashboard' %}"
+                   class="text-sm font-medium transition-colors hover:underline"
+                   style="color: var(--slate-400);">
+                    Dashboard
+                </a>
+                <a href="{% url 'counter' %}"
+                   class="text-sm font-medium transition-colors hover:underline"
+                   style="color: var(--slate-400);">
+                    Counter
+                </a>
+                <span id="header-username" class="text-sm" style="color: var(--slate-400);">{{ user.get_full_name|default:user.email }}</span>
+                <a href="{% url 'account_logout' %}"
+                   class="text-sm font-medium transition-colors hover:underline"
+                   style="color: var(--slate-400);">
+                    Sign Out
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button
+            class="sm:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5"
+            onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+            aria-label="Toggle menu"
+        >
+            <span class="block w-5 h-0.5 rounded-full" style="background-color: var(--slate-400);"></span>
+            <span class="block w-5 h-0.5 rounded-full" style="background-color: var(--slate-400);"></span>
+            <span class="block w-5 h-0.5 rounded-full" style="background-color: var(--slate-400);"></span>
+        </button>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden sm:hidden px-6 pb-4" style="background-color: var(--navy-950);">
+        <div class="flex flex-col gap-3 pt-2 border-t" style="border-color: var(--slate-800);">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'account_login' %}" class="text-sm font-medium py-2" style="color: var(--amber-400);">Sign In</a>
+            {% else %}
+                <span id="header-username-mobile" class="text-sm py-2" style="color: var(--slate-400);">{{ user.get_full_name|default:user.email }}</span>
+                <a href="{% url 'dashboard' %}" class="text-sm font-medium py-2" style="color: var(--slate-400);">Dashboard</a>
+                <a href="{% url 'counter' %}" class="text-sm font-medium py-2" style="color: var(--slate-400);">Counter</a>
+                <a href="{% url 'account_logout' %}" class="text-sm font-medium py-2" style="color: var(--slate-400);">Sign Out</a>
+            {% endif %}
+        </div>
+    </div>
+</header>

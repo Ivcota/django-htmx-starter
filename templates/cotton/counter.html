@@ -1,0 +1,21 @@
+<div id="counter" class="text-center py-24" style="background-color: var(--navy-950);">
+    <h1 class="text-7xl font-bold mb-4" style="color: #e8ecf4;">{{ count }}</h1>
+    <div class="flex gap-4 justify-center">
+        <button
+            hx-post="{% url 'counter_update' %}"
+            hx-target="#counter"
+            hx-swap="outerHTML"
+            hx-vals='{"count": "{{ count }}", "action": "decrement"}'
+            class="text-2xl px-6 py-2 cursor-pointer rounded-lg transition-colors"
+            style="background-color: var(--navy-800); color: #e8ecf4;"
+        >-</button>
+        <button
+            hx-post="{% url 'counter_update' %}"
+            hx-target="#counter"
+            hx-swap="outerHTML"
+            hx-vals='{"count": "{{ count }}", "action": "increment"}'
+            class="text-2xl px-6 py-2 cursor-pointer rounded-lg transition-colors"
+            style="background-color: var(--navy-800); color: #e8ecf4;"
+        >+</button>
+    </div>
+</div>

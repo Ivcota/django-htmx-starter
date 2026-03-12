@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+/**
+  * A catch-all path to Django template files, JavaScript, and Python files
+  * that contain Tailwind CSS classes and will be scanned by Tailwind to generate the final CSS file.
+  *
+  * If your final CSS file is not being updated after code changes, you may want to broaden or narrow
+  * the scope of this path.
+  */
+@source "../../../**/*.{html,py,js}";
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="password"],
+.form-field input[type="number"],
+.form-field input[type="url"],
+.form-field input[type="tel"],
+.form-field select,
+.form-field textarea {
+    @apply w-full px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-2;
+    background-color: var(--navy-950);
+    border: 1px solid var(--slate-500);
+    color: #e8ecf4;
+    --tw-ring-color: var(--amber-500);
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: var(--slate-400);
+}
+
+/* ─── Landing Page Tokens ─── */
+:root {
+    --navy-950: #0a0f1e;
+    --navy-900: #0f1629;
+    --navy-800: #151d38;
+    --slate-700: #2a3350;
+    --slate-600: #3d4a6b;
+    --slate-500: #5a6a8a;
+    --slate-400: #7889ad;
+    --amber-400: #f0bc4b;
+    --amber-500: #d4a039;
+    --amber-300: #f5ce6e;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ─── Font Utilities ─── */
+.font-display {
+    font-family: var(--font-display);
+}
+
+.font-body {
+    font-family: var(--font-body);
+}
+
+/* ─── Keyframe Animations ─── */
+@keyframes landing-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(32px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes landing-line-reveal {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes feature-card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animate-fade-up {
+    animation: landing-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-up-delay-1 {
+    animation: landing-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+.animate-fade-up-delay-2 {
+    animation: landing-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+}
+
+.animate-fade-up-delay-3 {
+    animation: landing-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
+}
+
+.animate-fade-up-delay-4 {
+    animation: landing-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both;
+}
+
+.animate-line-reveal {
+    animation: landing-line-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+    transform-origin: top;
+}
+
+.animate-card-enter {
+    animation: feature-card-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-card-enter-1 { animation-delay: 0.1s; }
+.animate-card-enter-2 { animation-delay: 0.2s; }
+.animate-card-enter-3 { animation-delay: 0.3s; }
+.animate-card-enter-4 { animation-delay: 0.4s; }
+
+/* ─── CTA Hover ─── */
+.cta-primary {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(212, 160, 57, 0.35);
+}
+
+.cta-outline {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, color 0.25s ease;
+}
+
+.cta-outline:hover {
+    transform: translateY(-2px);
+    background-color: rgba(120, 137, 173, 0.1);
+}
+
+/* ─── Hero Grid Background ─── */
+.hero-grid-bg {
+    background-image:
+        repeating-linear-gradient(
+            90deg,
+            rgba(120, 137, 173, 0.06) 0px,
+            rgba(120, 137, 173, 0.06) 1px,
+            transparent 1px,
+            transparent calc(100% / 6)
+        );
+    background-size: 100% 100%;
+}

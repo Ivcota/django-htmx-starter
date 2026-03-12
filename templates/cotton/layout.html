@@ -1,0 +1,25 @@
+{% load django_htmx %}
+{% load tailwind_tags %}
+<c-vars title="Django Starter" body_class="font-body m-0 antialiased" transparent_header="false" />
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% tailwind_css %}
+    {% htmx_script %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {{ head_extra }}
+</head>
+<body class="{{ body_class }} flex flex-col min-h-screen" hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'>
+    <c-header transparent="{{ transparent_header }}" />
+    <main class="flex-1 flex flex-col" style="background-color: var(--navy-950);">
+        {{ slot }}
+    </main>
+    <c-footer />
+</body>
+</html>

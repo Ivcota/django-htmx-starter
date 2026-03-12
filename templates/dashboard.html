@@ -1,0 +1,29 @@
+<c-layout title="Dashboard" body_class="font-body m-0 antialiased">
+
+    <section class="flex-1 py-16 lg:py-24" style="background-color: var(--navy-950);">
+        <div class="max-w-3xl mx-auto px-6 sm:px-10 lg:px-16">
+            <p class="text-xs font-semibold tracking-[0.3em] uppercase mb-4" style="color: var(--amber-400);">Dashboard</p>
+            <h1 class="font-display text-3xl sm:text-4xl font-bold mb-4" style="color: #e8ecf4;">
+                Welcome, {{ user.get_full_name|default:user.email }}
+            </h1>
+            <p class="text-base mb-12" style="color: var(--slate-400);">
+                You're signed in. This is your starting point — build something great.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="{% url 'counter' %}"
+                   class="block p-6 rounded-xl border transition-colors hover:border-amber-500/50"
+                   style="background-color: var(--navy-800); border-color: var(--slate-700);">
+                    <h3 class="font-display text-lg font-semibold mb-2" style="color: #e8ecf4;">Counter Example</h3>
+                    <p class="text-sm" style="color: var(--slate-400);">See HTMX in action with a simple interactive counter.</p>
+                </a>
+                <a href="{% url 'admin:index' %}"
+                   class="block p-6 rounded-xl border transition-colors hover:border-amber-500/50"
+                   style="background-color: var(--navy-800); border-color: var(--slate-700);">
+                    <h3 class="font-display text-lg font-semibold mb-2" style="color: #e8ecf4;">Admin Panel</h3>
+                    <p class="text-sm" style="color: var(--slate-400);">Manage your application data with the Django admin.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</c-layout>

@@ -1,0 +1,7 @@
+[build]
+builder = "nixpacks"
+buildCommand = "curl -LsSf https://astral.sh/uv/install.sh | sh && export PATH=\"$HOME/.local/bin:$PATH\" && uv sync --frozen && uv run python manage.py collectstatic --no-input"
+
+[deploy]
+startCommand = "uv run python manage.py migrate && uv run python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker"
+restartPolicyType = "on_failure"

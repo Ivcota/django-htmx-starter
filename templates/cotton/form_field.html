@@ -1,0 +1,16 @@
+<c-vars field />
+
+<div class="mb-5 form-field">
+    <label for="{{ field.id_for_label }}" class="block text-sm font-medium mb-1.5" style="color: #e8ecf4;">
+        {{ field.label }}
+    </label>
+    {{ field }}
+    {% if field.help_text %}
+        <div class="mt-1.5 text-xs [&_ul]:list-none [&_ul]:p-0 [&_ul]:m-0 [&_li]:leading-snug" style="color: var(--slate-400);">{{ field.help_text|safe }}</div>
+    {% endif %}
+    {% if field.errors %}
+        {% for error in field.errors %}
+            <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+</div>

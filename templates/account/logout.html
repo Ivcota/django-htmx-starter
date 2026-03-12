@@ -1,0 +1,23 @@
+<c-layout title="Sign Out" body_class="font-body m-0 antialiased">
+
+    <div class="flex-1 flex items-center justify-center px-6 py-12" style="background-color: var(--navy-950);">
+        <c-auth-card title="Sign Out">
+            <p class="text-center mb-6" style="color: var(--slate-400);">Are you sure you want to sign out?</p>
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                <div class="flex flex-col gap-3">
+                    <button type="submit"
+                            class="cta-primary w-full inline-flex items-center justify-center px-8 py-3 text-sm font-semibold rounded-lg tracking-wide cursor-pointer"
+                            style="background-color: var(--amber-500); color: var(--navy-950);">
+                        Sign Out
+                    </button>
+                    <a href="{% url 'home' %}"
+                       class="cta-outline w-full inline-flex items-center justify-center px-8 py-3 text-sm font-semibold rounded-lg tracking-wide border"
+                       style="border-color: var(--slate-600); color: var(--slate-400);">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </c-auth-card>
+    </div>
+</c-layout>

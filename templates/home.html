@@ -1,0 +1,178 @@
+<c-layout title="Django Starter — Django + HTMX + Tailwind" body_class="font-body m-0 antialiased" transparent_header="true">
+
+    <!-- ════════════════ HERO ════════════════ -->
+    <section class="relative flex items-end overflow-hidden" style="background-color: var(--navy-950);">
+        <!-- Grid background -->
+        <div class="hero-grid-bg absolute inset-0 pointer-events-none"></div>
+
+        <!-- Decorative vertical amber line -->
+        <div class="absolute left-[12%] top-0 bottom-0 w-px animate-line-reveal" style="background: linear-gradient(to bottom, var(--amber-400), transparent 70%);"></div>
+
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pb-24 pt-32 lg:pt-40">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+                <!-- Left content -->
+                <div class="lg:col-span-8">
+                    <p class="text-xs font-semibold tracking-[0.3em] uppercase mb-6 animate-fade-up" style="color: var(--amber-400);">
+                        Django + HTMX + Tailwind CSS
+                    </p>
+
+                    <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight mb-8 animate-fade-up-delay-1" style="color: #e8ecf4;">
+                        Build.<br>
+                        Ship.<br>
+                        <span style="color: var(--amber-400);">Fast.</span>
+                    </h1>
+
+                    <p class="text-lg sm:text-xl max-w-lg leading-relaxed mb-10 animate-fade-up-delay-2" style="color: var(--slate-400);">
+                        A batteries-included Django starter with authentication, HTMX for interactivity, Tailwind CSS for styling, and Django Cotton components.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 animate-fade-up-delay-3">
+                        {% if not user.is_authenticated %}
+                        <a href="{% url 'account_login' %}"
+                           class="cta-primary inline-flex items-center px-8 py-3.5 text-sm font-semibold rounded-lg tracking-wide"
+                           style="background-color: var(--amber-500); color: var(--navy-950);">
+                            Sign In
+                        </a>
+                        <a href="{% url 'account_signup' %}"
+                           class="cta-outline inline-flex items-center px-8 py-3.5 text-sm font-semibold rounded-lg tracking-wide border"
+                           style="border-color: var(--slate-500); color: var(--slate-400);">
+                            Create Account
+                        </a>
+                        {% else %}
+                        <a href="{% url 'dashboard' %}"
+                           class="cta-primary inline-flex items-center px-8 py-3.5 text-sm font-semibold rounded-lg tracking-wide"
+                           style="background-color: var(--amber-500); color: var(--navy-950);">
+                            Dashboard
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Right side — version badge -->
+                <div class="lg:col-span-4 hidden lg:flex justify-end items-end animate-fade-up-delay-4">
+                    <div class="text-right">
+                        <p class="text-xs tracking-[0.2em] uppercase" style="color: var(--slate-400);">Starter</p>
+                        <p class="font-display text-3xl font-light" style="color: var(--slate-500);">v1.0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom edge fade -->
+        <div class="absolute bottom-0 left-0 right-0 h-24 pointer-events-none" style="background: linear-gradient(to top, var(--navy-900), transparent);"></div>
+    </section>
+
+    <!-- ════════════════ FEATURES ════════════════ -->
+    <section class="py-24 lg:py-32" style="background-color: var(--navy-900);">
+        <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
+            <div class="mb-16">
+                <p class="text-xs font-semibold tracking-[0.3em] uppercase mb-4" style="color: var(--amber-400);">What's Included</p>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold" style="color: #e8ecf4;">Everything you need to start</h2>
+            </div>
+
+            <!-- 2x2 grid with 1px slate dividers -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-px rounded-xl overflow-hidden" style="background-color: var(--slate-700);">
+
+                <!-- Card 1: Authentication -->
+                <div class="p-8 lg:p-10 animate-card-enter animate-card-enter-1" style="background-color: var(--navy-800);">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background-color: rgba(240, 188, 75, 0.1);">
+                        <svg class="w-5 h-5" style="color: var(--amber-400);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-lg font-semibold mb-2" style="color: #e8ecf4;">Authentication</h3>
+                    <p class="text-sm leading-relaxed" style="color: var(--slate-400);">django-allauth with email login, signup, password reset, and social auth ready to configure.</p>
+                </div>
+
+                <!-- Card 2: HTMX -->
+                <div class="p-8 lg:p-10 animate-card-enter animate-card-enter-2" style="background-color: var(--navy-800);">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background-color: rgba(240, 188, 75, 0.1);">
+                        <svg class="w-5 h-5" style="color: var(--amber-400);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-lg font-semibold mb-2" style="color: #e8ecf4;">HTMX</h3>
+                    <p class="text-sm leading-relaxed" style="color: var(--slate-400);">Add interactivity with minimal JavaScript. Swap HTML fragments, handle forms, and build dynamic UIs the hypermedia way.</p>
+                </div>
+
+                <!-- Card 3: Tailwind CSS -->
+                <div class="p-8 lg:p-10 animate-card-enter animate-card-enter-3" style="background-color: var(--navy-800);">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background-color: rgba(240, 188, 75, 0.1);">
+                        <svg class="w-5 h-5" style="color: var(--amber-400);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-lg font-semibold mb-2" style="color: #e8ecf4;">Tailwind CSS</h3>
+                    <p class="text-sm leading-relaxed" style="color: var(--slate-400);">Utility-first CSS with django-tailwind integration. Hot reload in development, optimized builds for production.</p>
+                </div>
+
+                <!-- Card 4: Django Cotton -->
+                <div class="p-8 lg:p-10 animate-card-enter animate-card-enter-4" style="background-color: var(--navy-800);">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background-color: rgba(240, 188, 75, 0.1);">
+                        <svg class="w-5 h-5" style="color: var(--amber-400);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-lg font-semibold mb-2" style="color: #e8ecf4;">Django Cotton</h3>
+                    <p class="text-sm leading-relaxed" style="color: var(--slate-400);">Component-based templates with clean syntax. Build reusable UI components like &lt;c-header /&gt; and &lt;c-layout&gt;.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════ STACK ════════════════ -->
+    <section class="py-24 lg:py-32" style="background-color: var(--navy-950);">
+        <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+
+                <!-- Left: text -->
+                <div>
+                    <p class="text-xs font-semibold tracking-[0.3em] uppercase mb-4" style="color: var(--amber-400);">Stack</p>
+                    <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6" style="color: #e8ecf4;">Production-ready from day one</h2>
+                    <p class="text-base leading-relaxed" style="color: var(--slate-400);">
+                        Pre-configured for deployment on Railway or any platform that supports Docker. Includes PostgreSQL, WhiteNoise for static files, and Gunicorn with Uvicorn workers.
+                    </p>
+                </div>
+
+                <!-- Right: stack list -->
+                <div class="relative pl-8">
+                    <!-- Vertical connector line -->
+                    <div class="absolute left-[11px] top-2 bottom-2 w-px" style="background: linear-gradient(to bottom, var(--amber-400), var(--slate-700));"></div>
+
+                    <div class="relative flex items-start mb-10">
+                        <div class="absolute left-[-21px] top-1.5 w-3 h-3 rounded-full border-2 z-10" style="background-color: var(--amber-400); border-color: var(--amber-400);"></div>
+                        <div class="ml-4">
+                            <h4 class="font-display text-lg font-semibold" style="color: #e8ecf4;">Django 5.2</h4>
+                            <p class="text-sm mt-1" style="color: var(--slate-400);">The web framework for perfectionists with deadlines</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-start mb-10 ml-6">
+                        <div class="absolute left-[-27px] top-1.5 w-3 h-3 rounded-full border-2 z-10" style="background-color: var(--amber-500); border-color: var(--amber-500);"></div>
+                        <div class="ml-4">
+                            <h4 class="font-display text-lg font-semibold" style="color: #e8ecf4;">HTMX</h4>
+                            <p class="text-sm mt-1" style="color: var(--slate-400);">High-power tools for HTML — no JavaScript framework needed</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-start mb-10 ml-12">
+                        <div class="absolute left-[-33px] top-1.5 w-3 h-3 rounded-full border-2 z-10" style="background-color: var(--slate-500); border-color: var(--slate-500);"></div>
+                        <div class="ml-4">
+                            <h4 class="font-display text-lg font-semibold" style="color: #e8ecf4;">Tailwind CSS</h4>
+                            <p class="text-sm mt-1" style="color: var(--slate-400);">Utility-first CSS with hot reload via django-tailwind</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-start ml-18">
+                        <div class="absolute left-[-39px] top-1.5 w-3 h-3 rounded-full border-2 z-10" style="background-color: var(--slate-600); border-color: var(--slate-600);"></div>
+                        <div class="ml-4">
+                            <h4 class="font-display text-lg font-semibold" style="color: #e8ecf4;">PostgreSQL</h4>
+                            <p class="text-sm mt-1" style="color: var(--slate-400);">Production-grade database with Docker Compose for local dev</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</c-layout>

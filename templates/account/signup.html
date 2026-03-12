@@ -1,0 +1,36 @@
+{% load allauth %}
+
+<c-layout title="Sign Up" body_class="font-body m-0 antialiased">
+
+    <div class="flex-1 flex items-center justify-center px-6 py-12" style="background-color: var(--navy-950);">
+        <c-auth-card title="Create Account">
+            <form method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="mb-4 p-3 rounded-lg border" style="background-color: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+                        {% for error in form.non_field_errors %}
+                            <p class="text-sm text-red-400">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% for field in form %}
+                    <c-form-field :field="field" />
+                {% endfor %}
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                <button type="submit"
+                        class="cta-primary w-full inline-flex items-center justify-center px-8 py-3 text-sm font-semibold rounded-lg tracking-wide cursor-pointer"
+                        style="background-color: var(--amber-500); color: var(--navy-950);">
+                    Create Account
+                </button>
+            </form>
+            <div class="mt-6 text-center text-sm" style="color: var(--slate-400);">
+                <p>
+                    Already have an account?
+                    <a href="{% url 'account_login' %}" class="font-medium hover:underline" style="color: var(--amber-400);">Sign in</a>
+                </p>
+            </div>
+        </c-auth-card>
+    </div>
+</c-layout>
