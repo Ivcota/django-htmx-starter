@@ -31,11 +31,6 @@
                    style="color: var(--slate-400);">
                     Dashboard
                 </a>
-                <a href="{% url 'counter' %}"
-                   class="text-sm font-medium transition-colors hover:underline"
-                   style="color: var(--slate-400);">
-                    Counter
-                </a>
                 <span id="header-username" class="text-sm" style="color: var(--slate-400);">{{ user.get_full_name|default:user.email }}</span>
                 <a href="{% url 'account_logout' %}"
                    class="text-sm font-medium transition-colors hover:underline"
@@ -65,7 +60,6 @@
             {% else %}
                 <span id="header-username-mobile" class="text-sm py-2" style="color: var(--slate-400);">{{ user.get_full_name|default:user.email }}</span>
                 <a href="{% url 'dashboard' %}" class="text-sm font-medium py-2" style="color: var(--slate-400);">Dashboard</a>
-                <a href="{% url 'counter' %}" class="text-sm font-medium py-2" style="color: var(--slate-400);">Counter</a>
                 <a href="{% url 'account_logout' %}" class="text-sm font-medium py-2" style="color: var(--slate-400);">Sign Out</a>
             {% endif %}
         </div>

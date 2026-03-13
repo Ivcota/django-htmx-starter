@@ -15,9 +15,13 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('examples/counter/', views.counter, name='counter'),
     path('examples/counter/update/', views.counter_update, name='counter_update'),
+    path('health/', views.health, name='health'),
     path('admin/', admin.site.urls),
     path('', include('allauth.urls')),
 ]
+
+handler404 = 'core.views.error_404'
+handler500 = 'core.views.error_500'
 
 if settings.DEBUG:
     urlpatterns += [
