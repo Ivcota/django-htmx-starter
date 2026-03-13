@@ -36,14 +36,17 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
+      - name: Install just
+        uses: extractions/setup-just@v2
+
       - name: Set up Python
         run: uv python install
 
       - name: Install dependencies
-        run: uv sync --frozen
+        run: just sync --frozen
 
       - name: Run migrations
-        run: uv run python manage.py migrate
+        run: just migrate
 
       - name: Run tests
-        run: uv run python manage.py test
+        run: just test

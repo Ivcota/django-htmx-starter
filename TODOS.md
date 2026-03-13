@@ -28,8 +28,8 @@ Global loading bar (thin progress bar at top, like YouTube/GitHub) that shows du
 ### Dark/light theme toggle
 The starter already has CSS variables for a dark theme. Add a toggle (stored in localStorage) that swaps the variable set.
 
-### `just shell` and `just dbshell` recipes
-Launch Django shell (with IPython if available) and PostgreSQL shell respectively.
+### Environment-aware justfile recipes
+Add recipes that are aware of deployment targets (e.g., `just deploy staging`). Requires deployment strategy to be finalized first. **Effort: L | Priority: P3**
 
 ### Favicon
 An SVG favicon to complete the visual polish of the starter.
