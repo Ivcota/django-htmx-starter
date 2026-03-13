@@ -1,0 +1,9 @@
+<!-- Single toast message.
+     Usage: <c-toast message="Saved!" tags="success" />
+     Tags map to color: success=green, error=red, warning=amber, info/debug=blue -->
+<c-vars message="" tags="" />
+
+<div class="toast toast-{{ tags }}" role="alert" aria-live="polite">
+    <span>{{ message }}</span>
+    <button type="button" onclick="this.parentElement.remove()" aria-label="Dismiss" class="toast-close">&times;</button>
+</div>

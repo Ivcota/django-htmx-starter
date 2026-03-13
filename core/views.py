@@ -1,9 +1,12 @@
 import logging
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import get_messages
 from django.db import connection
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 
 logger = logging.getLogger(__name__)
@@ -33,9 +36,18 @@ def counter_update(request):
     action = request.POST.get('action')
     if action == 'increment':
         count += 1
+        messages.success(request, f'Counter incremented to {count}')
     elif action == 'decrement':
         count -= 1
-    return render(request, 'cotton/counter.html', {'count': count})
+        messages.success(request, f'Counter decremented to {count}')
+    response = render(request, 'cotton/counter.html', {'count': count})
+    # Append OOB toast so HTMX swaps the toast container independently of the counter
+    toast_html = render_to_string(
+        'cotton/toast_oob.html',
+        {'messages': get_messages(request)},
+    )
+    response.write(toast_html)
+    return response
 
 
 def health(request):

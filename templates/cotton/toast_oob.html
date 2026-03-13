@@ -1,0 +1,10 @@
+<!-- OOB toast container — appended to HTMX responses to swap toasts out-of-band.
+     Expects `messages` in context (from django.contrib.messages.get_messages). -->
+<div id="toast-container" hx-swap-oob="innerHTML" class="toast-container">
+    {% for message in messages %}
+    <div class="toast toast-{{ message.tags }}" role="alert" aria-live="polite">
+        <span>{{ message }}</span>
+        <button type="button" onclick="this.parentElement.remove()" aria-label="Dismiss" class="toast-close">&times;</button>
+    </div>
+    {% endfor %}
+</div>

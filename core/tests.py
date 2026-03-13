@@ -104,6 +104,50 @@ class CounterUpdateTests(TestCase):
         self.assertContains(response, '5')
 
 
+class ToastNotificationTests(TestCase):
+    """Tests for Django messages + HTMX OOB toast notifications."""
+
+    def test_htmx_increment_includes_oob_toast(self):
+        response = self.client.post('/examples/counter/update/', {
+            'count': '3',
+            'action': 'increment',
+        }, HTTP_HX_REQUEST='true')
+        self.assertContains(response, 'hx-swap-oob="innerHTML"')
+        self.assertContains(response, 'id="toast-container"')
+
+    def test_htmx_increment_toast_has_correct_message(self):
+        response = self.client.post('/examples/counter/update/', {
+            'count': '3',
+            'action': 'increment',
+        }, HTTP_HX_REQUEST='true')
+        self.assertContains(response, 'Counter incremented to 4')
+
+    def test_htmx_decrement_toast_has_correct_message(self):
+        response = self.client.post('/examples/counter/update/', {
+            'count': '3',
+            'action': 'decrement',
+        }, HTTP_HX_REQUEST='true')
+        self.assertContains(response, 'Counter decremented to 2')
+
+    def test_toast_has_success_tag(self):
+        response = self.client.post('/examples/counter/update/', {
+            'count': '0',
+            'action': 'increment',
+        }, HTTP_HX_REQUEST='true')
+        self.assertContains(response, 'toast-success')
+
+    def test_unknown_action_no_toast(self):
+        response = self.client.post('/examples/counter/update/', {
+            'count': '5',
+            'action': 'unknown',
+        }, HTTP_HX_REQUEST='true')
+        self.assertNotContains(response, 'toast-success')
+
+    def test_full_page_load_has_toast_container(self):
+        response = self.client.get('/examples/counter/')
+        self.assertContains(response, 'id="toast-container"')
+
+
 class HealthCheckTests(TestCase):
     def test_health_check_ok(self):
         response = self.client.get('/health/')

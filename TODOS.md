@@ -2,8 +2,8 @@
 
 ## Phase 2 — HTMX Patterns & DX
 
-### Django messages + HTMX toast notifications
-Every real app needs flash messages (success/error/info). Show toasts via HTMX OOB swaps — the pattern every project needs after the counter example. **Effort: S | Priority: P1**
+### ~~Django messages + HTMX toast notifications~~ ✓
+~~Every real app needs flash messages (success/error/info). Show toasts via HTMX OOB swaps — the pattern every project needs after the counter example.~~ **Done**
 
 ### HTMX form submission example
 The counter shows button clicks, but forms (create/edit with validation errors swapped inline) are the bread and butter of real apps. An "add item to list" example would complete the HTMX pattern set. **Effort: M | Priority: P1**
@@ -33,3 +33,6 @@ Add recipes that are aware of deployment targets (e.g., `just deploy staging`). 
 
 ### Favicon
 An SVG favicon to complete the visual polish of the starter.
+
+### Extract HTMX toast to middleware
+When there are 3+ HTMX views with OOB toast appending, extract to a middleware that auto-appends toast HTML to all HTMX responses with pending messages. Currently inline in each view (explicit > clever for a single view). **Effort: S | Priority: P3 | Depends on: 3+ HTMX views existing**
