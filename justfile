@@ -127,6 +127,7 @@ collectstatic:
 add-payments:
     uv add dj-stripe
     uv run python scripts/add_payments.py
+    {{manage}} makemigrations djstripe
     {{manage}} migrate
 
 # Seed example Products and Prices for development
