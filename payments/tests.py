@@ -507,6 +507,53 @@ class RequiresSubscriptionPriceIdTests(TestCase):
         self.assertEqual(response.status_code, 302)
 
 
+class PricingPageTests(TestCase):
+    def test_pricing_page_renders(self):
+        """GET /payments/pricing/ should return 200."""
+        response = self.client.get(reverse('payments:pricing'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_empty_state_when_no_products(self):
+        """Pricing page should show seed message when no products exist."""
+        response = self.client.get(reverse('payments:pricing'))
+        self.assertContains(response, 'seed_payments')
+
+    def test_displays_seeded_products(self):
+        """Pricing page should display product names from seeded data."""
+        from django.core.management import call_command
+
+        call_command('seed_payments')
+        response = self.client.get(reverse('payments:pricing'))
+
+        self.assertContains(response, 'Pro Plan')
+        self.assertContains(response, 'Lifetime Access')
+
+    def test_displays_formatted_prices(self):
+        """Pricing page should show formatted prices like $10/month, $100/year, $199."""
+        from django.core.management import call_command
+
+        call_command('seed_payments')
+        response = self.client.get(reverse('payments:pricing'))
+
+        self.assertContains(response, '$10')
+        self.assertContains(response, '/month')
+        self.assertContains(response, '$100')
+        self.assertContains(response, '/year')
+        self.assertContains(response, '$199')
+
+    def test_checkout_links(self):
+        """Pricing page buttons should link to checkout URLs for each price."""
+        from django.core.management import call_command
+        from djstripe.models import Price
+
+        call_command('seed_payments')
+        response = self.client.get(reverse('payments:pricing'))
+
+        for price in Price.objects.all():
+            checkout_url = reverse('payments:checkout', kwargs={'price_id': price.id})
+            self.assertContains(response, checkout_url)
+
+
 class SeedPaymentsTests(TestCase):
     def test_creates_products_and_prices(self):
         """seed_payments should create Products and Prices in the database."""

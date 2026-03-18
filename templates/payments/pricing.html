@@ -1,0 +1,64 @@
+<c-layout title="Pricing">
+    <section class="flex-1 py-16 lg:py-24" style="background-color: var(--navy-950);">
+        <div class="max-w-5xl mx-auto px-6 sm:px-10 lg:px-16">
+            <div class="text-center mb-12">
+                <p class="text-xs font-semibold tracking-[0.3em] uppercase mb-4"
+                   style="color: var(--amber-400);">Pricing</p>
+                <h1 class="font-display text-3xl sm:text-4xl font-bold mb-4"
+                    style="color: #e8ecf4;">Choose your plan</h1>
+            </div>
+
+            {% if not products %}
+                <div class="text-center">
+                    <p class="text-base mb-4" style="color: var(--slate-400);">
+                        No products found. Run the seed command to create sample products:
+                    </p>
+                    <code class="text-sm px-4 py-2 rounded-lg inline-block"
+                          style="background-color: var(--navy-800); color: var(--amber-400);">
+                        python manage.py seed_payments
+                    </code>
+                </div>
+            {% else %}
+                <div class="grid gap-8 md:grid-cols-{{ products|length }} max-w-4xl mx-auto">
+                    {% for product in products %}
+                        <div class="rounded-xl p-8 flex flex-col"
+                             style="background-color: var(--navy-800); border: 1px solid var(--slate-700);">
+                            <h2 class="font-display text-xl font-bold mb-2" style="color: #e8ecf4;">
+                                {{ product.name }}
+                            </h2>
+                            {% if product.description %}
+                                <p class="text-sm mb-6" style="color: var(--slate-400);">
+                                    {{ product.description }}
+                                </p>
+                            {% endif %}
+
+                            <div class="flex-1 flex flex-col gap-4 mt-4">
+                                {% for price in product.prices %}
+                                    <div class="flex items-end justify-between gap-4 pb-4"
+                                         style="border-bottom: 1px solid var(--slate-700);">
+                                        <div>
+                                            <span class="font-display text-2xl font-bold" style="color: #e8ecf4;">
+                                                {{ price.display }}
+                                            </span>
+                                            {% if price.recurring %}
+                                                <span class="text-sm" style="color: var(--slate-400);">/{{ price.recurring.interval }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <form method="post" action="{{ price.checkout_url }}">
+                                            {% csrf_token %}
+                                            <button type="submit"
+                                                    class="px-5 py-2 text-xs font-semibold rounded-lg tracking-wide"
+                                                    style="background-color: var(--amber-400); color: var(--navy-950);">
+                                                {% if price.recurring %}Subscribe{% else %}Buy{% endif %}
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</c-layout>

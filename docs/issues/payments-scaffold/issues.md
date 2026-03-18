@@ -141,16 +141,16 @@ A pricing page that dynamically renders Products and Prices from the dj-stripe d
 
 ### Acceptance criteria
 
-- [ ] Pricing page renders at `/payments/pricing/`
-- [ ] Products and Prices are pulled dynamically from dj-stripe models (not hardcoded)
-- [ ] Each product displays as a styled card with name, description, and price
-- [ ] Recurring prices show billing interval (e.g., "$10/month")
-- [ ] One-time prices show flat amount (e.g., "$199")
-- [ ] Buy/Subscribe buttons link to `/payments/checkout/<price_id>/`
-- [ ] Page uses Cotton layout component and Tailwind styling
-- [ ] Page is responsive (mobile-friendly)
-- [ ] Empty state: page handles gracefully when no products exist (shows message to run seed command)
-- [ ] Tests cover: page renders, displays seeded products, buttons link to correct checkout URLs
+- [x] Pricing page renders at `/payments/pricing/`
+- [x] Products and Prices are pulled dynamically from dj-stripe models (not hardcoded)
+- [x] Each product displays as a styled card with name, description, and price
+- [x] Recurring prices show billing interval (e.g., "$10/month")
+- [x] One-time prices show flat amount (e.g., "$199")
+- [x] Buy/Subscribe buttons link to `/payments/checkout/<price_id>/`
+- [x] Page uses Cotton layout component and Tailwind styling
+- [x] Page is responsive (mobile-friendly)
+- [x] Empty state: page handles gracefully when no products exist (shows message to run seed command)
+- [x] Tests cover: page renders, displays seeded products, buttons link to correct checkout URLs
 
 ### Blocked by
 
@@ -220,7 +220,7 @@ A Django management command that populates the database with example Products an
 
 - [x] `python manage.py seed_payments` creates the expected Products and Prices
 - [x] Running the command twice does not create duplicates
-- [ ] Products appear correctly on the pricing page (if Issue 4 is complete)
+- [x] Products appear correctly on the pricing page (if Issue 4 is complete)
 - [x] Products and Prices appear in Django admin
 - [x] `just seed-payments` recipe works
 - [x] Tests cover: seed creates expected records, idempotency (run twice, same count)
