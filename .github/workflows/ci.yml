@@ -48,5 +48,8 @@ jobs:
       - name: Run migrations
         run: just migrate
 
+      - name: Run worktree tests
+        run: just test-worktree
+
       - name: Run tests
         run: just test

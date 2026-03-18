@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Automatically runs `just setup` when a new git worktree is created.
+#
+# Detection: In linked worktrees, .git is a file (pointing to the main repo's
+# .git/worktrees/ directory). In the main working tree, .git is a directory.
+# $3 = 1 means this is a branch checkout (not a file checkout).
+
+set -euo pipefail
+
+prev_head="$1"
+new_head="$2"
+is_branch_checkout="$3"
+
+# Only act on branch checkouts in linked worktrees
+if [ "$is_branch_checkout" = "1" ] && [ -f ".git" ]; then
+    echo ""
+    echo "==> Worktree detected — running automatic setup..."
+    echo ""
+
+    # Resolve the main repo root from the worktree's .git file
+    MAIN_REPO=$(git rev-parse --git-common-dir 2>/dev/null | sed 's|/\.git$||')
+
+    # Source helpers from the main repo
+    source "$MAIN_REPO/scripts/worktree-helpers.sh"
+
+    # Generate .env with unique database name
+    generate_worktree_env "$MAIN_REPO/.env.example" "$(pwd)"
+
+    # Create the worktree's database (idempotent — no error if it already exists)
+    DB_NAME=$(worktree_db_name "$(pwd)")
+    docker compose --project-directory "$MAIN_REPO" up -d --wait
+    docker compose --project-directory "$MAIN_REPO" exec -T postgres \
+        createdb -U postgres --encoding=UTF8 "$DB_NAME" 2>/dev/null || true
+
+    # Install deps and run migrations
+    just sync && just npm-install && just migrate && just hooks
+fi

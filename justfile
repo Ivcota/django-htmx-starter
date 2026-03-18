@@ -12,7 +12,7 @@ default:
 
 # Initial project setup: create .env, start db, sync deps, install npm packages, run migrations
 [group: 'setup']
-setup: dotenv db sync npm-install migrate
+setup: dotenv db sync npm-install migrate hooks
 
 # Copy .env.example to .env (skips if .env already exists)
 [group: 'setup']
@@ -34,6 +34,11 @@ sync *args:
 [group: 'setup']
 npm-install:
     cd theme/static_src && npm install
+
+# Configure git to use project hooks
+[group: 'setup']
+hooks:
+    git config core.hooksPath .githooks
 
 # ── Development ───────────────────────────────────────────
 
@@ -117,6 +122,44 @@ check *args:
 collectstatic:
     {{manage}} collectstatic --noinput
 
+# ── Worktree ─────────────────────────────────────────────
+
+# Remove a worktree and drop its database
+[group: 'worktree']
+worktree-remove path:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    source scripts/worktree-helpers.sh
+    WORKTREE_PATH="{{path}}"
+    DB_NAME=$(worktree_db_name "$WORKTREE_PATH")
+    echo "Dropping database: $DB_NAME"
+    docker compose exec -T postgres dropdb -U postgres --if-exists "$DB_NAME"
+    git worktree remove "$WORKTREE_PATH"
+    echo "Removed worktree and database: $WORKTREE_PATH ($DB_NAME)"
+
+# Drop databases for worktrees that no longer exist
+[group: 'worktree']
+worktree-prune:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    source scripts/worktree-helpers.sh
+    # Get all databases matching our prefix
+    DBS=$(docker compose exec -T postgres psql -U postgres -tAc \
+        "SELECT datname FROM pg_database WHERE datname LIKE '${DB_PREFIX}_%';")
+    # Get all worktree paths
+    WORKTREES=$(git worktree list --porcelain | grep '^worktree ' | sed 's/^worktree //')
+    ORPHANS=$(find_orphaned_databases "$DBS" "$WORKTREES")
+    if [ -z "$ORPHANS" ]; then
+        echo "No orphaned databases found."
+    else
+        while IFS= read -r db; do
+            [ -z "$db" ] && continue
+            echo "Dropping orphaned database: $db"
+            docker compose exec -T postgres dropdb -U postgres --if-exists "$db"
+        done <<< "$ORPHANS"
+        echo "Prune complete."
+    fi
+
 # ── Quality ───────────────────────────────────────────────
 
 # Run tests
@@ -133,6 +176,11 @@ lint *args:
 [group: 'quality']
 format *args:
     uv run ruff format {{args}} .
+
+# Run worktree helper tests
+[group: 'quality']
+test-worktree:
+    bash tests/test_worktree.sh
 
 # Test static files with DEBUG off (verifies WhiteNoise is working)
 [group: 'quality']
