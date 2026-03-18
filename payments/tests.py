@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock, patch
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
@@ -595,3 +596,203 @@ class SeedPaymentsTests(TestCase):
 
         self.assertEqual(Product.objects.count(), 2)
         self.assertEqual(Price.objects.count(), 3)
+
+
+class BillingPortalMockModeTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='portal', email='portal@test.com', password='testpass')
+        self.client.login(username='portal', password='testpass')
+
+    @override_settings(STRIPE_MOCK_MODE=True)
+    def test_portal_mock_mode_redirects_to_dashboard(self):
+        """In mock mode, billing portal should redirect to dashboard."""
+        response = self.client.get(reverse('payments:portal'))
+        self.assertRedirects(response, '/dashboard/', fetch_redirect_response=False)
+
+    @override_settings(STRIPE_MOCK_MODE=True)
+    def test_portal_mock_mode_sets_toast_message(self):
+        """In mock mode, billing portal should add an info message."""
+        response = self.client.get(reverse('payments:portal'))
+        msgs = list(messages.get_messages(response.wsgi_request))
+        self.assertEqual(len(msgs), 1)
+        self.assertIn('mock mode', str(msgs[0]).lower())
+
+
+class BillingPortalLiveModeTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='portal_live', email='portal_live@test.com', password='testpass')
+        self.client.login(username='portal_live', password='testpass')
+
+    @override_settings(STRIPE_MOCK_MODE=False)
+    @patch('payments.views.get_customer')
+    @patch('stripe.billing_portal.Session.create')
+    def test_portal_live_mode_redirects_to_stripe(self, mock_session_create, mock_get_customer):
+        """In live mode, billing portal should redirect to the Stripe billing portal URL."""
+        mock_customer = MagicMock()
+        mock_customer.id = 'cus_live_123'
+        mock_get_customer.return_value = mock_customer
+        mock_session_create.return_value = MagicMock(url='https://billing.stripe.com/session/test')
+
+        response = self.client.get(reverse('payments:portal'))
+
+        mock_session_create.assert_called_once_with(
+            customer='cus_live_123',
+            return_url=response.wsgi_request.build_absolute_uri(reverse('dashboard')),
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, 'https://billing.stripe.com/session/test')
+
+
+class BillingPortalAuthTests(TestCase):
+    def test_portal_requires_login(self):
+        """Unauthenticated users should be redirected to login."""
+        response = self.client.get(reverse('payments:portal'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)
+
+
+class SignalHandlerTests(TestCase):
+    def test_payment_succeeded_handler_connected(self):
+        """payment_succeeded handler should be connected to payment_intent.succeeded signal."""
+        from djstripe.signals import WEBHOOK_SIGNALS
+
+        from payments.signals import handle_payment_succeeded
+
+        signal = WEBHOOK_SIGNALS['payment_intent.succeeded']
+        receivers = [r[1]() for r in signal.receivers]
+        self.assertIn(handle_payment_succeeded, receivers)
+
+    def test_subscription_changed_handler_connected(self):
+        """subscription_changed handler should be connected to customer.subscription.* signals."""
+        from djstripe.signals import WEBHOOK_SIGNALS
+
+        from payments.signals import handle_subscription_changed
+
+        for event_name in [
+            'customer.subscription.created',
+            'customer.subscription.updated',
+            'customer.subscription.deleted',
+        ]:
+            signal = WEBHOOK_SIGNALS[event_name]
+            receivers = [r[1]() for r in signal.receivers]
+            self.assertIn(handle_subscription_changed, receivers, f'Not connected to {event_name}')
+
+    def test_payment_succeeded_handler_callable(self):
+        """payment_succeeded handler should execute without error."""
+        from payments.signals import handle_payment_succeeded
+
+        event = MagicMock()
+        event.data = {'object': {'id': 'pi_test_123', 'amount': 1000}}
+        handle_payment_succeeded(sender=None, event=event)
+
+    def test_subscription_changed_handler_callable(self):
+        """subscription_changed handler should execute without error."""
+        from payments.signals import handle_subscription_changed
+
+        event = MagicMock()
+        event.data = {'object': {'id': 'sub_test_123', 'status': 'active'}}
+        handle_subscription_changed(sender=None, event=event)
+
+
+class PaymentsAdminTests(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser(username='admin', email='admin@test.com', password='testpass')
+        self.client.login(username='admin', password='testpass')
+
+    @override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
+    def test_customer_admin_loads(self):
+        """Customer admin changelist should load."""
+        response = self.client.get('/admin/djstripe/customer/')
+        self.assertEqual(response.status_code, 200)
+
+    @override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
+    def test_product_admin_loads(self):
+        """Product admin changelist should load."""
+        response = self.client.get('/admin/djstripe/product/')
+        self.assertEqual(response.status_code, 200)
+
+    @override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
+    def test_price_admin_loads(self):
+        """Price admin changelist should load."""
+        response = self.client.get('/admin/djstripe/price/')
+        self.assertEqual(response.status_code, 200)
+
+    @override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
+    def test_subscription_admin_loads(self):
+        """Subscription admin changelist should load."""
+        response = self.client.get('/admin/djstripe/subscription/')
+        self.assertEqual(response.status_code, 200)
+
+    @override_settings(STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
+    def test_paymentintent_admin_loads(self):
+        """PaymentIntent admin changelist should load."""
+        response = self.client.get('/admin/djstripe/paymentintent/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_customer_admin_list_display(self):
+        """Customer admin should display specific columns."""
+        from django.contrib.admin.sites import site
+        from djstripe.models import Customer
+
+        admin_cls = site._registry[Customer]
+        self.assertIn('subscriber', admin_cls.list_display)
+        self.assertIn('created', admin_cls.list_display)
+
+    def test_product_admin_list_display(self):
+        """Product admin should display specific columns."""
+        from django.contrib.admin.sites import site
+        from djstripe.models import Product
+
+        admin_cls = site._registry[Product]
+        self.assertIn('name', admin_cls.list_display)
+        self.assertIn('active', admin_cls.list_display)
+        self.assertIn('type', admin_cls.list_display)
+
+    def test_price_admin_list_display(self):
+        """Price admin should display specific columns."""
+        from django.contrib.admin.sites import site
+        from djstripe.models import Price
+
+        admin_cls = site._registry[Price]
+        self.assertIn('product', admin_cls.list_display)
+        self.assertIn('unit_amount', admin_cls.list_display)
+        self.assertIn('currency', admin_cls.list_display)
+        self.assertIn('recurring', admin_cls.list_display)
+
+    def test_subscription_admin_list_display(self):
+        """Subscription admin should display specific columns."""
+        from django.contrib.admin.sites import site
+        from djstripe.models import Subscription
+
+        admin_cls = site._registry[Subscription]
+        self.assertIn('customer', admin_cls.list_display)
+        self.assertIn('status', admin_cls.list_display)
+        self.assertIn('current_period_start', admin_cls.list_display)
+        self.assertIn('current_period_end', admin_cls.list_display)
+
+    def test_paymentintent_admin_list_display(self):
+        """PaymentIntent admin should display specific columns."""
+        from django.contrib.admin.sites import site
+        from djstripe.models import PaymentIntent
+
+        admin_cls = site._registry[PaymentIntent]
+        self.assertIn('customer', admin_cls.list_display)
+        self.assertIn('amount', admin_cls.list_display)
+        self.assertIn('currency', admin_cls.list_display)
+        self.assertIn('status', admin_cls.list_display)
+
+    def test_customer_admin_search_fields(self):
+        """Customer admin should have search fields configured."""
+        from django.contrib.admin.sites import site
+        from djstripe.models import Customer
+
+        admin_cls = site._registry[Customer]
+        self.assertTrue(len(admin_cls.search_fields) > 0)
+
+    def test_subscription_admin_list_filter(self):
+        """Subscription admin should have list filters configured."""
+        from django.contrib.admin.sites import site
+        from djstripe.models import Subscription
+
+        admin_cls = site._registry[Subscription]
+        self.assertIn('status', admin_cls.list_filter)

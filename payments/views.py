@@ -1,9 +1,11 @@
+from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
-from payments.services import charge_user, create_subscription
+from payments.services import charge_user, create_subscription, get_customer
 
 
 def pricing(request):
@@ -62,3 +64,21 @@ def success(request):
 @login_required
 def cancel(request):
     return render(request, 'payments/cancel.html')
+
+
+@login_required
+def billing_portal(request):
+    """Redirect to Stripe Billing Portal, or dashboard in mock mode."""
+    if settings.STRIPE_MOCK_MODE:
+        messages.info(request, 'Billing portal is not available in mock mode.')
+        return redirect(reverse('dashboard'))
+
+    # Live mode: create a Stripe Billing Portal session
+    import stripe
+
+    customer = get_customer(request.user)
+    session = stripe.billing_portal.Session.create(
+        customer=customer.id,
+        return_url=request.build_absolute_uri(reverse('dashboard')),
+    )
+    return redirect(session.url)

@@ -177,16 +177,16 @@ Three related capabilities that round out the payments experience: a billing por
 
 ### Acceptance criteria
 
-- [ ] `/payments/portal/` redirects to Stripe Billing Portal in live mode
-- [ ] `/payments/portal/` redirects to dashboard with toast notification in mock mode
-- [ ] Portal view requires authentication
-- [ ] `payment_succeeded` signal handler is connected and fires on webhook events
-- [ ] `subscription_changed` signal handler is connected and fires on status changes
-- [ ] Signal handlers include clear inline comments for developer customization
-- [ ] Django admin shows Customer, Product, Price, Subscription, PaymentIntent models
-- [ ] Admin list views have useful columns (customer email, amount, status, dates)
-- [ ] Admin has search and filter capabilities on key fields
-- [ ] Tests cover: portal redirect behavior (mock + conceptual live), signal handlers fire, admin views load
+- [x] `/payments/portal/` redirects to Stripe Billing Portal in live mode
+- [x] `/payments/portal/` redirects to dashboard with toast notification in mock mode
+- [x] Portal view requires authentication
+- [x] `payment_succeeded` signal handler is connected and fires on webhook events
+- [x] `subscription_changed` signal handler is connected and fires on status changes
+- [x] Signal handlers include clear inline comments for developer customization
+- [x] Django admin shows Customer, Product, Price, Subscription, PaymentIntent models
+- [x] Admin list views have useful columns (customer email, amount, status, dates)
+- [x] Admin has search and filter capabilities on key fields
+- [x] Tests cover: portal redirect behavior (mock + conceptual live), signal handlers fire, admin views load
 
 ### Blocked by
 
