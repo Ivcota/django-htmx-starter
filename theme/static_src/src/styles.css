@@ -45,6 +45,11 @@
     --font-body: 'Plus Jakarta Sans', sans-serif;
 }
 
+/* TODO: Update when dark/light theme toggle is implemented */
+html, body {
+    background-color: var(--navy-950);
+}
+
 /* ─── Font Utilities ─── */
 .font-display {
     font-family: var(--font-display);
