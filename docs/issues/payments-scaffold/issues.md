@@ -257,16 +257,16 @@ The capstone: a Python script that generates everything from Issues 1–6 automa
 
 ### Acceptance criteria
 
-- [ ] `just add-payments` runs successfully on a fresh clone
-- [ ] Running `just add-payments` twice produces no errors or duplicate configuration
-- [ ] After running, `python manage.py migrate` succeeds
-- [ ] After running, `python manage.py test payments` passes
-- [ ] After running, `just seed-payments` creates example products
-- [ ] All files from Issues 1–6 are generated correctly
-- [ ] Settings injection places apps in `INSTALLED_APPS` inline (not appended as separate block)
-- [ ] Script provides clear console output for each step
-- [ ] Inline comments in generated code help developers understand and customize (User story 23)
-- [ ] Switching from mock to live requires only env var changes (User story 22)
+- [x] `just add-payments` runs successfully on a fresh clone
+- [x] Running `just add-payments` twice produces no errors or duplicate configuration
+- [x] After running, `python manage.py migrate` succeeds
+- [x] After running, `python manage.py test payments` passes
+- [x] After running, `just seed-payments` creates example products
+- [x] All files from Issues 1–6 are generated correctly
+- [x] Settings injection places apps in `INSTALLED_APPS` inline (not appended as separate block)
+- [x] Script provides clear console output for each step
+- [x] Inline comments in generated code help developers understand and customize (User story 23)
+- [x] Switching from mock to live requires only env var changes (User story 22)
 
 ### Blocked by
 

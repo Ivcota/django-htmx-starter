@@ -12,7 +12,7 @@ default:
 
 # Initial project setup: create .env, start db, sync deps, install npm packages, run migrations
 [group: 'setup']
-setup: dotenv db sync npm-install migrate hooks
+setup: dotenv db sync npm-install migrate hooks collectstatic
 
 # Copy .env.example to .env (skips if .env already exists)
 [group: 'setup']
@@ -121,6 +121,13 @@ check *args:
 [group: 'django']
 collectstatic:
     {{manage}} collectstatic --noinput
+
+# Scaffold the complete Stripe payments system
+[group: 'setup']
+add-payments:
+    uv add dj-stripe
+    uv run python scripts/add_payments.py
+    {{manage}} migrate
 
 # Seed example Products and Prices for development
 [group: 'database']
