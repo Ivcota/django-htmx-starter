@@ -16,4 +16,5 @@ dependencies = [
     "psycopg2-binary>=2.9.11",
     "uvicorn>=0.41.0",
     "whitenoise>=6.12.0",
+    "dj-stripe>=2.9.2",
 ]

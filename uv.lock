@@ -294,6 +294,40 @@ wheels = [
 ]
 
 [[package]]
+name = "dj-stripe"
+version = "2.9.2"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.11'",
+]
+dependencies = [
+    { name = "django", version = "5.2.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "stripe", version = "11.6.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/30/4e/b16389544f6f45ff5754f4b72ecb651433464d79f8f0fcc49eeb204e14c2/dj_stripe-2.9.2.tar.gz", hash = "sha256:c543927f640deecd2ef574b445a564a7bd6f22e2ba4c7b0c2e33a8cb7a4f2cd2", size = 149172, upload-time = "2026-01-11T21:51:30.172Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f5/86/3600660194b716bd851d93faf1d0e58baed65765314c84a497f8ad1de90e/dj_stripe-2.9.2-py3-none-any.whl", hash = "sha256:048818586fed36f162cbbc6bf078dbb8697902043ef56e7e2c94ed5e6bba08aa", size = 184364, upload-time = "2026-01-11T21:51:28.384Z" },
+]
+
+[[package]]
+name = "dj-stripe"
+version = "2.10.3"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12'",
+    "python_full_version == '3.11.*'",
+]
+dependencies = [
+    { name = "django", version = "5.2.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "django", version = "6.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "stripe", version = "14.4.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f2/1d/2cf7839130c185f96f72fcac782040517fb0cf4d4f8c2756debfe08b7485/dj_stripe-2.10.3.tar.gz", hash = "sha256:fe870a93dfcbb7f17432fb1da7291a2222c89b32a6d6fba16cb34ed6b37f1584", size = 132793, upload-time = "2025-10-15T14:38:51.09Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c9/d7/8acdaf9dfad2c6334cad4620fdb62545914b81a0d6cd847e2bedf12b35a9/dj_stripe-2.10.3-py3-none-any.whl", hash = "sha256:035b8f991429d5a474d1d46e4f3ab36722250fa9dac39b5d835c694c49a19dea", size = 156525, upload-time = "2025-10-15T14:38:49.58Z" },
+]
+
+[[package]]
 name = "django"
 version = "5.2.11"
 source = { registry = "https://pypi.org/simple" }
@@ -396,6 +430,8 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "dj-database-url" },
+    { name = "dj-stripe", version = "2.9.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "dj-stripe", version = "2.10.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "django", version = "5.2.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "django", version = "6.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "django-allauth", extra = ["socialaccount"] },
@@ -413,6 +449,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "dj-database-url", specifier = ">=3.1.2" },
+    { name = "dj-stripe", specifier = ">=2.9.2" },
     { name = "django", specifier = ">=5.2.11" },
     { name = "django-allauth", extras = ["socialaccount"], specifier = ">=65.14.3" },
     { name = "django-cotton", specifier = ">=2.6.1" },
@@ -642,6 +679,39 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/90/76/437d71068094df0726366574cf3432a4ed754217b436eb7429415cf2d480/sqlparse-0.5.5.tar.gz", hash = "sha256:e20d4a9b0b8585fdf63b10d30066c7c94c5d7a7ec47c889a2d83a3caa93ff28e", size = 120815, upload-time = "2025-12-19T07:17:45.073Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/49/4b/359f28a903c13438ef59ebeee215fb25da53066db67b305c125f1c6d2a25/sqlparse-0.5.5-py3-none-any.whl", hash = "sha256:12a08b3bf3eec877c519589833aed092e2444e68240a3577e8e26148acc7b1ba", size = 46138, upload-time = "2025-12-19T07:17:46.573Z" },
+]
+
+[[package]]
+name = "stripe"
+version = "11.6.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.11'",
+]
+dependencies = [
+    { name = "requests", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/30/a4/7e16668d7adfb45229f4b67c04c79f53fe78335a6d0625303b32024d831c/stripe-11.6.0.tar.gz", hash = "sha256:0ced7cce23a6cb1a393c86a1f7f9435c9d83ae7cbd556362868caf62cb44a92c", size = 1390405, upload-time = "2025-02-24T22:39:46.962Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d8/67/e320a11da2049dfd50fd1726952093b173332563f32d1a94cc3758932147/stripe-11.6.0-py2.py3-none-any.whl", hash = "sha256:6e6cf09ebb6d5fc2d708401cb8868fd7bff987a6d09a0433caaa92c62f97dbc5", size = 1636766, upload-time = "2025-02-24T22:39:44.629Z" },
+]
+
+[[package]]
+name = "stripe"
+version = "14.4.1"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12'",
+    "python_full_version == '3.11.*'",
+]
+dependencies = [
+    { name = "requests", marker = "python_full_version >= '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version >= '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/63/01/59d92650146c6340e333c22b8a238561b022e8641ba255298dfe46b4137d/stripe-14.4.1.tar.gz", hash = "sha256:e3eecfb336819326cd2ab9a93f98eb01b49c4d4d93c9d167a52a68ab99c19a88", size = 1473321, upload-time = "2026-03-06T22:59:45.822Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/35/0f/547eab75052384a72771b396a484556e5636629c031e5eafa8dc27af89ed/stripe-14.4.1-py3-none-any.whl", hash = "sha256:d6722b985dc3b4d6da01ff4fa95a975d3694a89bba96895bf17aa858073ff2b8", size = 2116642, upload-time = "2026-03-06T22:59:43.72Z" },
 ]
 
 [[package]]

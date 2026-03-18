@@ -122,6 +122,11 @@ check *args:
 collectstatic:
     {{manage}} collectstatic --noinput
 
+# Seed example Products and Prices for development
+[group: 'database']
+seed-payments:
+    {{manage}} seed_payments
+
 # ── Worktree ─────────────────────────────────────────────
 
 # Remove a worktree and drop its database

@@ -25,15 +25,15 @@ End-to-end: a developer can install the app, run migrations, and toggle between 
 
 ### Acceptance criteria
 
-- [ ] `dj-stripe` is in `pyproject.toml` and installable via `uv sync`
-- [ ] `payments` app is created and registered in `INSTALLED_APPS`
-- [ ] dj-stripe migrations run successfully (`python manage.py migrate`)
-- [ ] `STRIPE_MOCK_MODE` setting is readable from environment and defaults to `true`
-- [ ] `.env.example` contains all Stripe-related env vars with comments
-- [ ] Webhook URL is registered at `/stripe/webhook/`
-- [ ] `mock.py` provides helper functions for creating fake Customer, Product, Price, and PaymentIntent dj-stripe records
-- [ ] Existing tests continue to pass
-- [ ] New tests verify: app loads, mock mode toggle works, mock helpers create valid DB records
+- [x] `dj-stripe` is in `pyproject.toml` and installable via `uv sync`
+- [x] `payments` app is created and registered in `INSTALLED_APPS`
+- [x] dj-stripe migrations run successfully (`python manage.py migrate`)
+- [x] `STRIPE_MOCK_MODE` setting is readable from environment and defaults to `true`
+- [x] `.env.example` contains all Stripe-related env vars with comments
+- [x] Webhook URL is registered at `/stripe/webhook/`
+- [x] `mock.py` provides helper functions for creating fake Customer, Product, Price, and PaymentIntent dj-stripe records
+- [x] Existing tests continue to pass
+- [x] New tests verify: app loads, mock mode toggle works, mock helpers create valid DB records
 
 ### Blocked by
 
@@ -66,14 +66,14 @@ In live mode, this uses Stripe Checkout (redirect). In mock mode, it skips Strip
 
 ### Acceptance criteria
 
-- [ ] `get_customer(user)` returns or creates a dj-stripe Customer linked to the Django user
-- [ ] `charge_user(user, price_id)` initiates a one-time payment flow
-- [ ] In mock mode: checkout creates DB records and redirects to success page
-- [ ] In live mode: checkout redirects to Stripe Checkout
-- [ ] Success page renders with confirmation message and uses Cotton layout
-- [ ] Cancel page renders with retry messaging and uses Cotton layout
-- [ ] Unauthenticated users are redirected to login
-- [ ] Tests cover: full mock checkout flow, success/cancel view responses, get_customer creation and retrieval
+- [x] `get_customer(user)` returns or creates a dj-stripe Customer linked to the Django user
+- [x] `charge_user(user, price_id)` initiates a one-time payment flow
+- [x] In mock mode: checkout creates DB records and redirects to success page
+- [x] In live mode: checkout redirects to Stripe Checkout
+- [x] Success page renders with confirmation message and uses Cotton layout
+- [x] Cancel page renders with retry messaging and uses Cotton layout
+- [x] Unauthenticated users are redirected to login
+- [x] Tests cover: full mock checkout flow, success/cancel view responses, get_customer creation and retrieval
 
 ### Blocked by
 
@@ -104,15 +104,15 @@ Extends the checkout flow to support recurring subscriptions and adds the `@requ
 
 ### Acceptance criteria
 
-- [ ] `create_subscription(user, price_id)` initiates a subscription flow
-- [ ] In mock mode: creates fake Subscription record and redirects to success
-- [ ] In live mode: creates Stripe Checkout Session in subscription mode
-- [ ] Checkout view auto-detects whether a Price is one-time or recurring
-- [ ] `@requires_subscription` allows access for users with active subscriptions
-- [ ] `@requires_subscription` redirects users without subscriptions (to pricing page)
-- [ ] `@requires_subscription(price_id="specific_id")` gates on a specific price/plan
-- [ ] `@requires_subscription` with no args gates on any active subscription
-- [ ] Tests cover: mock subscription flow, decorator allows/denies access, decorator with specific price_id
+- [x] `create_subscription(user, price_id)` initiates a subscription flow
+- [x] In mock mode: creates fake Subscription record and redirects to success
+- [x] In live mode: creates Stripe Checkout Session in subscription mode
+- [x] Checkout view auto-detects whether a Price is one-time or recurring
+- [x] `@requires_subscription` allows access for users with active subscriptions
+- [x] `@requires_subscription` redirects users without subscriptions (to pricing page)
+- [x] `@requires_subscription(price_id="specific_id")` gates on a specific price/plan
+- [x] `@requires_subscription` with no args gates on any active subscription
+- [x] Tests cover: mock subscription flow, decorator allows/denies access, decorator with specific price_id
 
 ### Blocked by
 
@@ -218,12 +218,12 @@ A Django management command that populates the database with example Products an
 
 ### Acceptance criteria
 
-- [ ] `python manage.py seed_payments` creates the expected Products and Prices
-- [ ] Running the command twice does not create duplicates
+- [x] `python manage.py seed_payments` creates the expected Products and Prices
+- [x] Running the command twice does not create duplicates
 - [ ] Products appear correctly on the pricing page (if Issue 4 is complete)
-- [ ] Products and Prices appear in Django admin
-- [ ] `just seed-payments` recipe works
-- [ ] Tests cover: seed creates expected records, idempotency (run twice, same count)
+- [x] Products and Prices appear in Django admin
+- [x] `just seed-payments` recipe works
+- [x] Tests cover: seed creates expected records, idempotency (run twice, same count)
 
 ### Blocked by
 

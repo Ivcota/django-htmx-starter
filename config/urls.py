@@ -16,6 +16,8 @@ urlpatterns = [
     path('examples/counter/', views.counter, name='counter'),
     path('examples/counter/update/', views.counter_update, name='counter_update'),
     path('health/', views.health, name='health'),
+    path('payments/', include('payments.urls')),
+    path('stripe/', include('djstripe.urls', namespace='djstripe')),
     path('admin/', admin.site.urls),
     path('', include('allauth.urls')),
 ]

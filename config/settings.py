@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django_htmx',
     'tailwind',
     'theme',
+    'djstripe',
+    'payments',
     'core',
 ]
 
@@ -215,3 +217,11 @@ LOGGING = {
         },
     },
 }
+
+# --- Stripe / Payments ---
+STRIPE_LIVE_SECRET_KEY = os.environ.get('STRIPE_LIVE_SECRET_KEY', '')
+STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY', '')
+DJSTRIPE_WEBHOOK_SECRET = os.environ.get('DJSTRIPE_WEBHOOK_SECRET', '')
+STRIPE_MOCK_MODE = os.environ.get('STRIPE_MOCK_MODE', 'true').lower() in ('true', '1', 'yes')
+DJSTRIPE_SUBSCRIBER_MODEL = 'core.User'
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'
