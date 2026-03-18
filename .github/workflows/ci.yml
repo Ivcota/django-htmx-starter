@@ -29,6 +29,7 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/django_starter
       SECRET_KEY: test-secret-key-not-for-production
       DEBUG: "false"
+      SECURE_SSL_REDIRECT: "false"
 
     steps:
       - uses: actions/checkout@v4
@@ -47,6 +48,9 @@ jobs:
 
       - name: Run migrations
         run: just migrate
+
+      - name: Collect static files
+        run: just collectstatic
 
       - name: Run worktree tests
         run: just test-worktree

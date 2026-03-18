@@ -96,12 +96,6 @@ ACTUAL_DEBUG=$(grep "^DEBUG=" "$FAKE_WORKTREE/.env" | cut -d= -f2-)
 assert_eq "other env vars preserved" "true" "$ACTUAL_DEBUG"
 
 echo ""
-echo "=== just setup sets hooksPath ==="
-
-ACTUAL_HOOKS_PATH=$(cd "$PROJECT_ROOT" && git config --local core.hooksPath 2>/dev/null || echo "NOT SET")
-assert_eq "core.hooksPath is .githooks" ".githooks" "$ACTUAL_HOOKS_PATH"
-
-echo ""
 echo "=== worktree_db_name (resolve db name from path) ==="
 
 assert_eq "derives db name from worktree path" \

@@ -187,3 +187,27 @@ test-worktree:
 test-static:
     {{manage}} collectstatic --noinput
     DEBUG=0 ALLOWED_HOSTS='*' {{manage}} runserver {{port}}
+
+# Run CI workflow locally using act
+[group: 'quality']
+ci:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # Find and stop any container using port 5432
+    CONTAINER=$(docker ps --format '{{{{.ID}}' --filter 'publish=5432' 2>/dev/null || true)
+    if [ -n "$CONTAINER" ]; then
+        echo "Stopping container on port 5432..."
+        docker stop "$CONTAINER"
+    fi
+    cleanup() {
+        # Stop any leftover act containers on 5432
+        LEFTOVER=$(docker ps --format '{{{{.ID}}' --filter 'publish=5432' 2>/dev/null || true)
+        if [ -n "$LEFTOVER" ]; then
+            docker stop "$LEFTOVER" 2>/dev/null || true
+        fi
+        echo "Restarting dev postgres..."
+        docker compose up -d --wait
+    }
+    trap cleanup EXIT
+    echo "Running act..."
+    act push --env-file /dev/null --secret GITHUB_TOKEN="$(gh auth token)"
