@@ -21,14 +21,7 @@
         {{ slot }}
     </main>
     <!-- Toast container — renders messages on full page loads, updated via OOB swap on HTMX requests -->
-    <div id="toast-container" class="toast-container">
-        {% for message in messages %}
-        <div class="toast toast-{{ message.tags }}" role="alert" aria-live="polite">
-            <span>{{ message }}</span>
-            <button type="button" onclick="this.parentElement.remove()" aria-label="Dismiss" class="toast-close">&times;</button>
-        </div>
-        {% endfor %}
-    </div>
+    <c-toasts />
 
     <c-footer />
 </body>

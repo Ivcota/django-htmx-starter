@@ -147,6 +147,33 @@ class ToastNotificationTests(TestCase):
         response = self.client.get('/examples/counter/')
         self.assertContains(response, 'id="toast-container"')
 
+    def test_toast_markup_consistent_across_contexts(self):
+        """Toast markup rendered on full page loads must match HTMX OOB responses."""
+        import re
+
+        # Trigger a message via HTMX so we get toast markup in OOB response
+        htmx_response = self.client.post('/examples/counter/update/', {
+            'count': '0',
+            'action': 'increment',
+        }, HTTP_HX_REQUEST='true')
+        htmx_html = htmx_response.content.decode()
+
+        # Extract individual toast divs (not the container) from OOB response
+        toast_pattern = re.compile(
+            r'<div class="toast toast-\w+"[^>]*>.*?</div>',
+            re.DOTALL,
+        )
+        oob_toasts = toast_pattern.findall(htmx_html)
+        self.assertTrue(oob_toasts, 'No toast markup found in HTMX OOB response')
+
+        # Verify the toast has the expected structure:
+        # role="alert", aria-live="polite", dismiss button with aria-label
+        oob_toast = oob_toasts[0]
+        self.assertIn('role="alert"', oob_toast)
+        self.assertIn('aria-live="polite"', oob_toast)
+        self.assertIn('aria-label="Dismiss"', oob_toast)
+        self.assertIn('toast-close', oob_toast)
+
 
 class HealthCheckTests(TestCase):
     def test_health_check_ok(self):

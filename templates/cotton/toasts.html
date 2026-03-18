@@ -1,0 +1,11 @@
+<!-- Toast container — single source of truth for toast rendering. -->
+<c-vars oob="false" />
+
+<div id="toast-container"{% if oob == "true" %} hx-swap-oob="innerHTML"{% endif %} class="toast-container">
+    {% for message in messages %}
+    <div class="toast toast-{{ message.tags }}" role="alert" aria-live="polite">
+        <span>{{ message }}</span>
+        <button type="button" onclick="this.parentElement.remove()" aria-label="Dismiss" class="toast-close">&times;</button>
+    </div>
+    {% endfor %}
+</div>
